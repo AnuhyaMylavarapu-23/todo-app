@@ -10,11 +10,6 @@ import { StateContext } from "./contexts";
 
 function App() {
 
-  // useEffect(() => {
-  //   fetch("/api/todos")
-  //     .then((result) => result.json())
-  //     .then((posts) => dispatch({ type: "FETCH_POSTS", posts }));
-  // }, []);
 
   const [state, dispatch] = useReducer(appReducer, {
     user: "",
@@ -35,29 +30,6 @@ function App() {
     }
   }, [todoResponse]);
 
-
-  
-
-  // const handleAddTodoItem = (newTodo) => {
-  //   dispatch({
-  //     type: "CREATE_TODO",
-  //     ...newTodo,
-  //   });
-  // };
-
-  // function handleCheckBoxToggle(id) {
-  //   dispatch({
-  //     type: "TOGGLE_TODO",
-  //     id,
-  //   });
-  // }
-
-  // function handleDeleteTodo(id) {
-  //   dispatch({
-  //     type: "DELETE_TODO",
-  //     id,
-  //   });
-  // }
 
       const userBarStyle = {
         backgroundColor: "#f3f4f6",
