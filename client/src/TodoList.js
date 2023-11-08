@@ -1,19 +1,15 @@
 import Todo from "./Todo";
-import { v4 as uuidv4 } from "uuid";
 import React from "react";
-import { useContext } from "react";
-import { StateContext } from "./contexts";
 
-export default function TodoList() {
-  const { state } = useContext(StateContext);
-  const { todolist } = state;
-  
+export default function TodoList({ todolist, handleCheckBoxToggle, handleDeleteTodo }) {
   return (
-    <div >
-      {todolist.map((p) => (
+    <div>
+      {todolist.map((todo) => (
         <Todo
-          {...p}
-          key={uuidv4()}
+          {...todo}
+          key={todo.id}
+          handleCheckBoxToggle={handleCheckBoxToggle}
+          handleDeleteTodo={handleDeleteTodo}
         />
       ))}
     </div>

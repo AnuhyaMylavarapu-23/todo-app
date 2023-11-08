@@ -1,87 +1,37 @@
-import React, { useContext } from "react";
-import { StateContext } from "./contexts";
-import { useResource } from "react-request-hook";
+import React from 'react';
 
 export default function Todo({
+  id,
   title,
   description,
   author,
   dateCreated,
   completed,
-  id,
-  dateCompleted,
+  handleCheckBoxToggle,
+  handleDeleteTodo,
 }) {
-  const date = new Date();
-
-  let currentDay = String(date.getDate()).padStart(2, "0");
-
-  let currentMonth = String(date.getMonth() + 1).padStart(2, "0");
-
-  let currentYear = date.getFullYear();
-  let currentHour = String(date.getHours()).padStart(2, "0");
-  let currentMinute = String(date.getMinutes()).padStart(2, "0");
-  let currentSecond = String(date.getSeconds()).padStart(2, "0");
-
-  // we will display the date as DD-MM-YYYY
-
-  let currentDate = `${currentDay}-${currentMonth}-${currentYear} ${currentHour}:${currentMinute}:${currentSecond}`;
-  const { dispatch } = useContext(StateContext);
-  const [dtodo, deleteTodo] = useResource(
-    ({ title, description, author, dateCreated, completed, id,dateCompleted }) => ({
-      url: `/todos/${id}`,
-      method: "delete",
-      data: { title, description, author, dateCreated, completed, id,dateCompleted },
-    })
-  );
-
-  const [uptodo, updateTodo] = useResource(
-    ({ title, description, author, dateCreated, completed, id,dateCompleted }) => ({
-      url: `/todos/${id}`,
-      method: "put",
-      data: { title, description, author, dateCreated, completed, id ,dateCompleted},
-    })
-  );
-
-  function onCheckboxChange() {
-    const cdate = currentDate;
-    const updatedTodo = {
-      title: title,
-      description: description,
-      author: author,
-      dateCreated: dateCreated,
-      completed: !completed,
-      id: id,
-      dateCompleted: cdate,
-    };
-    updateTodo(updatedTodo);
-    dispatch({ type: "TOGGLE_TODO", id,cdate });
-  }
-
-  const deletedData = {
-    title: title,
-    description: description,
-    author: author,
-    dateCreated: dateCreated,
-    completed: completed,
-    id: id,
-    dateCompleted: "",
+  const onCheckboxChange = () => {
+    handleCheckBoxToggle(id);
   };
 
-  function onDeleteTodo() {
-    deleteTodo(deletedData);
-    dispatch({ type: "DELETE_TODO", id });
-  }
-  
+  const onDeleteTodo = () => {
+    handleDeleteTodo(id);
+  };
+
+  const date = new Date();
+  const currentDay = String(date.getDate()).padStart(2, "0");
+  const currentMonth = String(date.getMonth() + 1).padStart(2, "0");
+  const currentYear = date.getFullYear();
+  const currentDate = `${currentDay}-${currentMonth}-${currentYear}`;
+
   return (
     <div>
-      <h3> Title : {title}</h3>
-      <div>Description : {description}</div>
-      <br />
+      <h3>Title: {title}</h3>
+      <div>Description: {description}</div>
       <div>Author: {author}</div>
-      <br />
-      <div>DateCreated : {dateCreated}</div>
+      <div>Date Created: {dateCreated}</div>
       <div>
-        Completed :{" "}
+        Completed:{" "}
         <input
           type="checkbox"
           checked={completed}
@@ -89,19 +39,17 @@ export default function Todo({
         />
       </div>
 
-      {(() => {
-        if (completed) {
-          return <div>dateCompleted : {dateCompleted}</div>;
-        }
-      })()}
-      <br />
+      {completed && (
+        <div>Date Completed: {currentDate}</div>
+      )}
+
       <div>
-        <button type="Button" onClick={onDeleteTodo}>
+        <button type="button" onClick={onDeleteTodo}>
           Delete
         </button>
       </div>
-      <hr></hr>
-      <br />
+
+      <hr />
     </div>
   );
 }

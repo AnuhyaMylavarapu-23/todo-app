@@ -14,34 +14,20 @@ function todosReducer(state, action) {
   switch (action.type) {
     case "CREATE_TODO":
       const newTodo = {
+        id: action.id,
         title: action.title,
         description: action.description,
         author: action.author,
         dateCreated: action.dateCreated,
         completed: action.completed,
-        id: action.id,
       };
       return [newTodo, ...state];
     case "TOGGLE_TODO":
-      return state.map((item) => {
-        if (item.id === action.id) {
-          const updatedTodo = {
-            ...item,
-            completed: !item.completed,
-            dateCompleted: action.cdate,
-          };
-          return updatedTodo;
-        }
-        return item;
-      });
+      return state.map((item) =>
+        item.id === action.id ? { ...item, completed: !item.completed } : item
+      );
     case "DELETE_TODO":
-      let newState = [...state];
-      const newState1 = newState.filter((item) => item.id !== action.id);
-
-      return newState1;
-    case "FETCH_TODOS":
-      return action.todos;
-
+      return state.filter((item) => item.id !== action.id);
     default:
       return state;
   }
